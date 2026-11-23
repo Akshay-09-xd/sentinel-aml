@@ -70,7 +70,7 @@ def detect(transactions):
                 truncated = True
                 return None
             amounts = [t["amount_minor"] for t in edges] + [candidate["amount_minor"]]
-            if (candidate["target"] == target and min(amounts) >= max(amounts) * 0.8
+            if (candidate["target"] == target and min(amounts) * 5 >= max(amounts) * 4
                     and min(amounts) >= 100000
                     and timestamp(edges[-1]["timestamp"]) < timestamp(candidate["timestamp"])
                     <= start + timedelta(hours=24)):

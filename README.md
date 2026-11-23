@@ -168,6 +168,14 @@ The API tests exercise the case lifecycle, note encryption, login/session protec
 
 The seeded smoke benchmark expects two graph findings with exact transaction-ID evidence matches. It is a fixture regression check, not a real-world AML accuracy estimate. Real deployment evaluation would require independently labeled data and threshold calibration.
 
+Native Neo4j 5.26.33 was also tested locally without Docker. Both seeded patterns returned the same exact evidence fingerprints as the NetworkX engine. To repeat this check against a dedicated database, set the Neo4j connection variables and run:
+
+```powershell
+./.venv/Scripts/python -m scripts.verify_neo4j
+```
+
+The Ollama integration's success and failure handling are covered with a mocked model response. A live language-model generation requires your own installed model and was not exercised during this build.
+
 ## Project map
 
 ```text

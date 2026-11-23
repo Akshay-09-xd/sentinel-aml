@@ -1,52 +1,750 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Sentinel AML — follow the money, investigate the network.">
-  <title>Sentinel · AML investigations</title>
-  <link rel="stylesheet" href="/static/style.css">
-  <script src="/static/app.js" defer></script>
-</head>
-<body>
-  <div id="auth" class="auth-screen" hidden>
-    <div class="auth-story"><div class="brand"><span class="brand-mark">S</span> sentinel<span class="brand-sub">AML</span></div><div><p class="eyebrow">FINANCIAL CRIME INTELLIGENCE</p><h1>Follow the money.<br>See the network.</h1><p>Turn connected transactions into a clear path for investigation.</p><div class="story-network"><span>ACC-001</span><i></i><span>ACC-002</span><i></i><span>ACC-003</span></div></div><p class="muted">Built for human judgment. Every finding has evidence.</p></div>
-    <form id="auth-form" class="auth-card"><p class="eyebrow">INVESTIGATOR WORKSPACE</p><h2 id="auth-title">Welcome back</h2><p id="auth-description" class="muted">Sign in to your investigation workspace.</p><label>Username<input id="username" autocomplete="username" required minlength="2" maxlength="60" pattern="[a-zA-Z0-9_.@-]+" placeholder="e.g. akshay"></label><label>Password<input id="password" type="password" autocomplete="current-password" required minlength="12" maxlength="200" placeholder="At least 12 characters"></label><p id="auth-error" class="error" role="alert"></p><button id="auth-submit" class="primary" type="submit">Sign in</button><p class="small muted">Your session expires after 8 hours. Investigator notes are encrypted at rest.</p></form>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="Sentinel AML — follow the money, investigate the network." name="description"/>
+  <title>
+   Sentinel · AML investigations
+  </title>
+  <link href="/static/style.css" rel="stylesheet"/>
+  <script defer="" src="/static/app.js">
+  </script>
+ </head>
+ <body>
+  <div class="auth-screen" hidden="" id="auth">
+   <div class="auth-story">
+    <div class="brand">
+     <span class="brand-mark">
+      S
+     </span>
+     sentinel
+     <span class="brand-sub">
+      AML
+     </span>
+    </div>
+    <div>
+     <p class="eyebrow">
+      FINANCIAL CRIME INTELLIGENCE
+     </p>
+     <h1>
+      Follow the money.
+      <br/>
+      See the network.
+     </h1>
+     <p>
+      Turn connected transactions into a clear path for investigation.
+     </p>
+     <div class="story-network">
+      <span>
+       ACC-001
+      </span>
+      <i>
+      </i>
+      <span>
+       ACC-002
+      </span>
+      <i>
+      </i>
+      <span>
+       ACC-003
+      </span>
+     </div>
+    </div>
+    <p class="muted">
+     Built for human judgment. Every finding has evidence.
+    </p>
+   </div>
+   <form class="auth-card" id="auth-form">
+    <p class="eyebrow">
+     INVESTIGATOR WORKSPACE
+    </p>
+    <h2 id="auth-title">
+     Welcome back
+    </h2>
+    <p class="muted" id="auth-description">
+     Sign in to your investigation workspace.
+    </p>
+    <label>
+     Username
+     <input autocomplete="username" id="username" maxlength="60" minlength="2" pattern="[a-zA-Z0-9_.@-]+" placeholder="e.g. akshay" required=""/>
+    </label>
+    <label>
+     Password
+     <input autocomplete="current-password" id="password" maxlength="200" minlength="12" placeholder="At least 12 characters" required="" type="password"/>
+    </label>
+    <p class="error" id="auth-error" role="alert">
+    </p>
+    <button class="primary" id="auth-submit" type="submit">
+     Sign in
+    </button>
+    <p class="small muted">
+     Your session expires after 8 hours. Investigator notes are encrypted at rest.
+    </p>
+   </form>
   </div>
-
-  <div id="workspace" class="shell" hidden>
-    <aside class="sidebar">
-      <a href="/" class="brand"><span class="brand-mark">S</span> sentinel<span class="brand-sub">AML</span></a>
-      <p class="nav-caption">WORKSPACE</p>
-      <nav aria-label="Main navigation"><button class="nav-item active" data-page="overview"><span class="nav-icon">▦</span> Overview</button><button class="nav-item" data-page="cases"><span class="nav-icon">▤</span> Case queue <span id="nav-count" class="nav-count">0</span></button><button class="nav-item" data-page="network"><span class="nav-icon">⌘</span> Network explorer</button><button class="nav-item" data-page="data"><span class="nav-icon">⇅</span> Data & integrations</button><button class="nav-item" data-page="audit"><span class="nav-icon">◷</span> Audit trail</button></nav>
-      <div class="sidebar-bottom"><div class="environment"><span class="dot"></span> Local workspace<p>Human review required</p></div><button id="logout" class="profile"><span id="avatar" class="avatar">A</span><span><strong id="user-label">Investigator</strong><small>Sign out</small></span><span class="exit-icon">↪</span></button></div>
-    </aside>
-
-    <main>
-      <header class="topbar"><span>Workspace <span class="crumb">/</span> <strong id="breadcrumb">Overview</strong></span><div class="topbar-right"><span class="synthetic-label">SYNTHETIC DEMO AVAILABLE</span><span class="topbar-date" id="today"></span></div></header>
-      <div class="content">
-        <section id="page-overview" class="page">
-          <div class="page-heading"><div><p class="eyebrow">INVESTIGATION COMMAND CENTER</p><h1>See the bigger picture.</h1><p class="muted">Connected activity. Traceable evidence. Informed decisions.</p></div><button class="primary run-detection">Run detection <span class="button-key">↵</span></button></div>
-          <div id="empty-banner" class="welcome-banner" hidden><div><strong>Your workspace is ready.</strong><p>Load a fictional network to investigate two connected money movement patterns.</p></div><button id="load-demo" class="primary">Load demo network</button></div>
-          <div class="metrics"><article><p>Active cases <span class="metric-icon">▤</span></p><strong id="metric-cases">0</strong><small>Awaiting investigator action</small></article><article><p>High-priority findings <span class="metric-icon amber">◇</span></p><strong id="metric-high">0</strong><small>Rule score of 90 or above</small></article><article><p>Flagged transfer volume <span class="metric-icon">$</span></p><strong id="metric-volume">$0</strong><small>Unique evidence transfers</small></article><article><p>Accounts monitored <span class="metric-icon">⌘</span></p><strong id="metric-accounts">0</strong><small id="metric-transfers">0 transactions indexed</small></article></div>
-          <div class="overview-grid"><section class="panel network-panel"><div class="panel-heading"><div><h2>Transaction network</h2><p>Follow the connections behind each finding</p></div><button class="text-button" data-goto="network">Explore network</button></div><div class="graph-wrap"><canvas id="overview-graph" aria-label="Transaction network. Use the case table for accessible evidence."></canvas><div class="graph-legend"><span><i class="legend-risk"></i>Flagged account</span><span><i class="legend-normal"></i>Other account</span></div><div class="graph-caption">USD · Directional transfers</div></div></section><section class="panel patterns-panel"><div class="panel-heading"><div><h2>Detection coverage</h2><p>Explainable signals, connected evidence</p></div></div><div class="pattern"><span class="pattern-glyph">↻</span><div><h3>Circular flow</h3><p>Funds return to the origin across 2–5 accounts within 24 hours.</p><span id="cycle-count" class="pattern-count">0 findings</span></div></div><div class="pattern"><span class="pattern-glyph purple">⋈</span><div><h3>Concentrated fan-in</h3><p>4+ senders converge on one recipient, totaling $20k+ in 24 hours.</p><span id="fanin-count" class="pattern-count">0 findings</span></div></div><div class="model-note"><span>✧</span><p><strong>Behavioral anomaly ranking</strong><br>Isolation Forest adds relative account context to each investigation.</p></div></section></div>
-          <section class="panel"><div class="panel-heading"><div><h2>Cases requiring attention</h2><p>Start with the highest-priority evidence</p></div><button class="text-button" data-goto="cases">View all cases</button></div><div id="overview-cases"></div></section>
-          <p class="footer-note">Findings indicate review priorities. Anomaly scores describe unusual behavior in this dataset.</p>
-        </section>
-
-        <section id="page-cases" class="page" hidden><div class="page-heading"><div><p class="eyebrow">INVESTIGATIONS</p><h1>Case queue</h1><p class="muted">Review the evidence. Record your judgment.</p></div><button class="primary run-detection">Run detection</button></div><div class="toolbar"><input id="case-search" type="search" placeholder="Search by account, case ID, or pattern" aria-label="Search cases"><select id="case-filter" aria-label="Filter by status"><option value="">All statuses</option><option>Open</option><option>In review</option><option>Escalated</option><option>Closed</option></select><span id="filtered-count" class="muted"></span></div><section class="panel" id="case-list"></section></section>
-
-        <section id="page-network" class="page" hidden><div class="page-heading"><div><p class="eyebrow">GRAPH INTELLIGENCE</p><h1>Network explorer</h1><p class="muted">Select an account to inspect its connections and behavior.</p></div><button id="reset-network" class="secondary">Reset view</button></div><div class="explorer-layout"><section class="panel"><div class="panel-heading"><h2>Account relationships</h2><select id="network-filter" aria-label="Filter network"><option value="">All accounts</option><option value="flagged">Flagged accounts only</option></select></div><div class="graph-wrap large"><canvas id="explorer-graph" aria-label="Interactive account network"></canvas><div class="graph-legend"><span><i class="legend-risk"></i>Flagged account</span><span><i class="legend-normal"></i>Other account</span></div></div></section><section class="panel account-inspector"><div class="panel-heading"><h2>Account inspector</h2></div><div id="account-detail" class="inspector-body"><p class="muted">Select a node or choose an account below.</p></div><label class="account-picker">Account<select id="account-select"><option value="">Choose an account</option></select></label></section></div><section class="panel"><div class="panel-heading"><h2>Transaction ledger</h2><span id="ledger-count" class="muted"></span></div><div id="transaction-ledger"></div></section></section>
-
-        <section id="page-data" class="page" hidden><div class="page-heading"><div><p class="eyebrow">WORKSPACE SETTINGS</p><h1>Data & integrations</h1><p class="muted">Bring your transaction network into focus.</p></div></div><div class="settings-grid"><section class="panel settings-card"><span class="settings-icon">⇅</span><h2>Import a transaction network</h2><p class="muted">Upload a JSON file containing accounts and transfers. Imports are atomic and matching records are safe to retry.</p><label class="file-label">Choose JSON file<input id="import-file" type="file" accept=".json,application/json"></label><button id="import-button" class="primary">Validate & import</button><button id="download-sample" class="text-button">Download sample JSON</button><p class="small muted">USD only · timezone-aware timestamps · integer cents<br>Up to 1,000 accounts and 5,000 transactions per workspace.</p><p id="import-result" role="status"></p></section><section class="panel settings-card"><span class="settings-icon">⌘</span><h2>Neo4j graph engine</h2><p class="muted">Sync your network to Neo4j Desktop or Aura and run the pattern queries directly in the graph database.</p><span id="neo4j-status" class="badge neutral">Not configured</span><button id="neo4j-sync" class="secondary">Sync to Neo4j</button><p class="small muted" id="neo4j-engine">The local detector runs using NetworkX. Set SENTINEL_GRAPH_BACKEND=neo4j on the server to enable native detection.</p></section><section class="panel settings-card"><span class="settings-icon">✧</span><h2>Local AI drafting</h2><p class="muted">Generate an evidence-based summary using Ollama. Review the draft before adding it to a case.</p><span id="ollama-status" class="badge neutral">Not configured</span><p class="small muted">Set OLLAMA_MODEL and start your local Ollama server. Account names and investigator notes stay out of the prompt.</p></section><section class="panel settings-card"><span class="settings-icon">▣</span><h2>Workspace protection</h2><p class="muted">Investigator notes use authenticated encryption. Passwords use scrypt hashing. Sessions expire automatically.</p><div class="protection-row"><span>Note encryption</span><strong>Fernet</strong></div><div class="protection-row"><span>Audit trail</span><strong>Hash chained</strong></div><div class="protection-row"><span>Access model</span><strong>Single investigator</strong></div></section></div></section>
-
-        <section id="page-audit" class="page" hidden><div class="page-heading"><div><p class="eyebrow">ACCOUNTABILITY</p><h1>Audit trail</h1><p class="muted">A traceable history of investigation activity.</p></div><button id="refresh-audit" class="secondary">Verify chain</button></div><div id="audit-integrity" class="integrity-banner"></div><section class="panel" id="audit-events"></section></section>
+  <div class="shell" hidden="" id="workspace">
+   <aside class="sidebar">
+    <a class="brand" href="/">
+     <span class="brand-mark">
+      S
+     </span>
+     sentinel
+     <span class="brand-sub">
+      AML
+     </span>
+    </a>
+    <p class="nav-caption">
+     WORKSPACE
+    </p>
+    <nav aria-label="Main navigation">
+     <button class="nav-item active" data-page="overview">
+      <span class="nav-icon">
+       ▦
+      </span>
+      Overview
+     </button>
+     <button class="nav-item" data-page="cases">
+      <span class="nav-icon">
+       ▤
+      </span>
+      Case queue
+      <span class="nav-count" id="nav-count">
+       0
+      </span>
+     </button>
+     <button class="nav-item" data-page="network">
+      <span class="nav-icon">
+       ⌘
+      </span>
+      Network explorer
+     </button>
+     <button class="nav-item" data-page="data">
+      <span class="nav-icon">
+       ⇅
+      </span>
+      Data &amp; integrations
+     </button>
+     <button class="nav-item" data-page="audit">
+      <span class="nav-icon">
+       ◷
+      </span>
+      Audit trail
+     </button>
+    </nav>
+    <div class="sidebar-bottom">
+     <div class="environment">
+      <span class="dot">
+      </span>
+      Local workspace
+      <p>
+       Human review required
+      </p>
+     </div>
+     <button class="profile" id="logout">
+      <span class="avatar" id="avatar">
+       A
+      </span>
+      <span>
+       <strong id="user-label">
+        Investigator
+       </strong>
+       <small>
+        Sign out
+       </small>
+      </span>
+      <span class="exit-icon">
+       ↪
+      </span>
+     </button>
+    </div>
+   </aside>
+   <main>
+    <header class="topbar">
+     <span>
+      Workspace
+      <span class="crumb">
+       /
+      </span>
+      <strong id="breadcrumb">
+       Overview
+      </strong>
+     </span>
+     <div class="topbar-right">
+      <span class="synthetic-label">
+       SYNTHETIC DEMO AVAILABLE
+      </span>
+      <span class="topbar-date" id="today">
+      </span>
+     </div>
+    </header>
+    <div class="content">
+     <section class="page" id="page-overview">
+      <div class="page-heading">
+       <div>
+        <p class="eyebrow">
+         INVESTIGATION COMMAND CENTER
+        </p>
+        <h1>
+         See the bigger picture.
+        </h1>
+        <p class="muted">
+         Connected activity. Traceable evidence. Informed decisions.
+        </p>
+       </div>
+       <button class="primary run-detection">
+        Run detection
+        <span class="button-key">
+         ↵
+        </span>
+       </button>
       </div>
-    </main>
+      <div class="welcome-banner" hidden="" id="empty-banner">
+       <div>
+        <strong>
+         Your workspace is ready.
+        </strong>
+        <p>
+         Load a fictional network to investigate two connected money movement patterns.
+        </p>
+       </div>
+       <button class="primary" id="load-demo">
+        Load demo network
+       </button>
+      </div>
+      <div class="metrics">
+       <article>
+        <p>
+         Active cases
+         <span class="metric-icon">
+          ▤
+         </span>
+        </p>
+        <strong id="metric-cases">
+         0
+        </strong>
+        <small>
+         Awaiting investigator action
+        </small>
+       </article>
+       <article>
+        <p>
+         High-priority findings
+         <span class="metric-icon amber">
+          ◇
+         </span>
+        </p>
+        <strong id="metric-high">
+         0
+        </strong>
+        <small>
+         Rule score of 90 or above
+        </small>
+       </article>
+       <article>
+        <p>
+         Flagged transfer volume
+         <span class="metric-icon">
+          $
+         </span>
+        </p>
+        <strong id="metric-volume">
+         $0
+        </strong>
+        <small>
+         Unique evidence transfers
+        </small>
+       </article>
+       <article>
+        <p>
+         Accounts monitored
+         <span class="metric-icon">
+          ⌘
+         </span>
+        </p>
+        <strong id="metric-accounts">
+         0
+        </strong>
+        <small id="metric-transfers">
+         0 transactions indexed
+        </small>
+       </article>
+      </div>
+      <div class="overview-grid">
+       <section class="panel network-panel">
+        <div class="panel-heading">
+         <div>
+          <h2>
+           Transaction network
+          </h2>
+          <p>
+           Follow the connections behind each finding
+          </p>
+         </div>
+         <button class="text-button" data-goto="network">
+          Explore network
+         </button>
+        </div>
+        <div class="graph-wrap">
+         <canvas aria-label="Transaction network. Use the case table for accessible evidence." id="overview-graph">
+         </canvas>
+         <div class="graph-legend">
+          <span>
+           <i class="legend-risk">
+           </i>
+           Flagged account
+          </span>
+          <span>
+           <i class="legend-normal">
+           </i>
+           Other account
+          </span>
+         </div>
+         <div class="graph-caption">
+          USD · Directional transfers
+         </div>
+        </div>
+       </section>
+       <section class="panel patterns-panel">
+        <div class="panel-heading">
+         <div>
+          <h2>
+           Detection coverage
+          </h2>
+          <p>
+           Explainable signals, connected evidence
+          </p>
+         </div>
+        </div>
+        <div class="pattern">
+         <span class="pattern-glyph">
+          ↻
+         </span>
+         <div>
+          <h3>
+           Circular flow
+          </h3>
+          <p>
+           Funds return to the origin across 2–5 accounts within 24 hours.
+          </p>
+          <span class="pattern-count" id="cycle-count">
+           0 findings
+          </span>
+         </div>
+        </div>
+        <div class="pattern">
+         <span class="pattern-glyph purple">
+          ⋈
+         </span>
+         <div>
+          <h3>
+           Concentrated fan-in
+          </h3>
+          <p>
+           4+ senders converge on one recipient, totaling $20k+ in 24 hours.
+          </p>
+          <span class="pattern-count" id="fanin-count">
+           0 findings
+          </span>
+         </div>
+        </div>
+        <div class="model-note">
+         <span>
+          ✧
+         </span>
+         <p>
+          <strong>
+           Behavioral anomaly ranking
+          </strong>
+          <br/>
+          Isolation Forest adds relative account context to each investigation.
+         </p>
+        </div>
+       </section>
+      </div>
+      <section class="panel">
+       <div class="panel-heading">
+        <div>
+         <h2>
+          Cases requiring attention
+         </h2>
+         <p>
+          Start with the highest-priority evidence
+         </p>
+        </div>
+        <button class="text-button" data-goto="cases">
+         View all cases
+        </button>
+       </div>
+       <div id="overview-cases">
+       </div>
+      </section>
+      <p class="footer-note">
+       Findings indicate review priorities. Anomaly scores describe unusual behavior in this dataset.
+      </p>
+     </section>
+     <section class="page" hidden="" id="page-cases">
+      <div class="page-heading">
+       <div>
+        <p class="eyebrow">
+         INVESTIGATIONS
+        </p>
+        <h1>
+         Case queue
+        </h1>
+        <p class="muted">
+         Review the evidence. Record your judgment.
+        </p>
+       </div>
+       <button class="primary run-detection">
+        Run detection
+       </button>
+      </div>
+      <div class="toolbar">
+       <input aria-label="Search cases" id="case-search" placeholder="Search by account, case ID, or pattern" type="search"/>
+       <select aria-label="Filter by status" id="case-filter">
+        <option value="">
+         All statuses
+        </option>
+        <option>
+         Open
+        </option>
+        <option>
+         In review
+        </option>
+        <option>
+         Escalated
+        </option>
+        <option>
+         Closed
+        </option>
+       </select>
+       <span class="muted" id="filtered-count">
+       </span>
+      </div>
+      <section class="panel" id="case-list">
+      </section>
+     </section>
+     <section class="page" hidden="" id="page-network">
+      <div class="page-heading">
+       <div>
+        <p class="eyebrow">
+         GRAPH INTELLIGENCE
+        </p>
+        <h1>
+         Network explorer
+        </h1>
+        <p class="muted">
+         Select an account to inspect its connections and behavior.
+        </p>
+       </div>
+       <button class="secondary" id="reset-network">
+        Reset view
+       </button>
+      </div>
+      <div class="explorer-layout">
+       <section class="panel">
+        <div class="panel-heading">
+         <h2>
+          Account relationships
+         </h2>
+         <select aria-label="Filter network" id="network-filter">
+          <option value="">
+           All accounts
+          </option>
+          <option value="flagged">
+           Flagged accounts only
+          </option>
+         </select>
+        </div>
+        <div class="graph-wrap large">
+         <canvas aria-label="Interactive account network" id="explorer-graph">
+         </canvas>
+         <div class="graph-legend">
+          <span>
+           <i class="legend-risk">
+           </i>
+           Flagged account
+          </span>
+          <span>
+           <i class="legend-normal">
+           </i>
+           Other account
+          </span>
+         </div>
+        </div>
+       </section>
+       <section class="panel account-inspector">
+        <div class="panel-heading">
+         <h2>
+          Account inspector
+         </h2>
+        </div>
+        <div class="inspector-body" id="account-detail">
+         <p class="muted">
+          Select a node or choose an account below.
+         </p>
+        </div>
+        <label class="account-picker">
+         Account
+         <select id="account-select">
+          <option value="">
+           Choose an account
+          </option>
+         </select>
+        </label>
+       </section>
+      </div>
+      <section class="panel">
+       <div class="panel-heading">
+        <h2>
+         Transaction ledger
+        </h2>
+        <span class="muted" id="ledger-count">
+        </span>
+       </div>
+       <div id="transaction-ledger">
+       </div>
+      </section>
+     </section>
+     <section class="page" hidden="" id="page-data">
+      <div class="page-heading">
+       <div>
+        <p class="eyebrow">
+         WORKSPACE SETTINGS
+        </p>
+        <h1>
+         Data &amp; integrations
+        </h1>
+        <p class="muted">
+         Bring your transaction network into focus.
+        </p>
+       </div>
+      </div>
+      <div class="settings-grid">
+       <section class="panel settings-card">
+        <span class="settings-icon">
+         ⇅
+        </span>
+        <h2>
+         Import a transaction network
+        </h2>
+        <p class="muted">
+         Upload a JSON file containing accounts and transfers. Imports are atomic and matching records are safe to retry.
+        </p>
+        <label class="file-label">
+         Choose JSON file
+         <input accept=".json,application/json" id="import-file" type="file"/>
+        </label>
+        <button class="primary" id="import-button">
+         Validate &amp; import
+        </button>
+        <button class="text-button" id="download-sample">
+         Download sample JSON
+        </button>
+        <p class="small muted">
+         USD only · timezone-aware timestamps · integer cents
+         <br/>
+         Up to 1,000 accounts and 5,000 transactions per workspace.
+        </p>
+        <p id="import-result" role="status">
+        </p>
+       </section>
+       <section class="panel settings-card">
+        <span class="settings-icon">
+         ⌘
+        </span>
+        <h2>
+         Neo4j graph engine
+        </h2>
+        <p class="muted">
+         Sync your network to Neo4j Desktop or Aura and run the pattern queries directly in the graph database.
+        </p>
+        <span class="badge neutral" id="neo4j-status">
+         Not configured
+        </span>
+        <button class="secondary" id="neo4j-sync">
+         Sync to Neo4j
+        </button>
+        <p class="small muted" id="neo4j-engine">
+         The local detector runs using NetworkX. Set SENTINEL_GRAPH_BACKEND=neo4j on the server to enable native detection.
+        </p>
+       </section>
+       <section class="panel settings-card">
+        <span class="settings-icon">
+         ✧
+        </span>
+        <h2>
+         Local AI drafting
+        </h2>
+        <p class="muted">
+         Generate an evidence-based summary using Ollama. Review the draft before adding it to a case.
+        </p>
+        <span class="badge neutral" id="ollama-status">
+         Not configured
+        </span>
+        <p class="small muted">
+         Set OLLAMA_MODEL and start your local Ollama server. Account names and investigator notes stay out of the prompt.
+        </p>
+       </section>
+       <section class="panel settings-card">
+        <span class="settings-icon">
+         ▣
+        </span>
+        <h2>
+         Workspace protection
+        </h2>
+        <p class="muted">
+         Investigator notes use authenticated encryption. Passwords use scrypt hashing. Sessions expire automatically.
+        </p>
+        <div class="protection-row">
+         <span>
+          Note encryption
+         </span>
+         <strong>
+          Fernet
+         </strong>
+        </div>
+        <div class="protection-row">
+         <span>
+          Audit trail
+         </span>
+         <strong>
+          Hash chained
+         </strong>
+        </div>
+        <div class="protection-row">
+         <span>
+          Access model
+         </span>
+         <strong>
+          Single investigator
+         </strong>
+        </div>
+       </section>
+      </div>
+     </section>
+     <section class="page" hidden="" id="page-audit">
+      <div class="page-heading">
+       <div>
+        <p class="eyebrow">
+         ACCOUNTABILITY
+        </p>
+        <h1>
+         Audit trail
+        </h1>
+        <p class="muted">
+         A traceable history of investigation activity.
+        </p>
+       </div>
+       <button class="secondary" id="refresh-audit">
+        Verify chain
+       </button>
+      </div>
+      <div class="integrity-banner" id="audit-integrity">
+      </div>
+      <section class="panel" id="audit-events">
+      </section>
+     </section>
+    </div>
+   </main>
   </div>
-
-  <dialog id="case-dialog"><div class="dialog-heading"><div><p class="eyebrow" id="detail-id"></p><h2 id="detail-title"></h2></div><button id="close-case" class="icon-button" aria-label="Close case">×</button></div><div class="dialog-body"><div id="detail-summary"></div><h3>Evidence transfers</h3><div id="detail-evidence"></div><div class="case-workflow"><h3>Investigator decision</h3><form id="case-form"><div class="form-row"><label>Status<select id="detail-status"><option>Open</option><option>In review</option><option>Escalated</option><option>Closed</option></select></label><label>Assigned to<input id="detail-assignee" maxlength="60" placeholder="Investigator name"></label></div><label>Decision rationale<textarea id="detail-rationale" rows="2" maxlength="3000" placeholder="Required when closing or escalating"></textarea></label><button class="primary" type="submit">Save decision</button></form></div><div class="notes-heading"><h3>Investigation notes</h3><button id="draft-button" class="text-button">✧ Draft with local AI</button></div><div id="draft-area" hidden><p class="small amber-text">AI draft · Verify every statement before saving</p><textarea id="draft-text" rows="6" aria-label="AI draft for review"></textarea><button id="save-draft" class="secondary">Save reviewed draft as note</button></div><div id="detail-notes"></div><form id="note-form"><label for="note-text">Add a private note</label><textarea id="note-text" rows="3" maxlength="5000" required placeholder="Record your observations and next steps…"></textarea><div class="note-actions"><span class="small muted">Encrypted at rest</span><button class="secondary" type="submit">Add note</button></div></form><button id="export-case" class="text-button">Download case report</button></div></dialog>
-  <div id="toast" class="toast" role="status" hidden></div>
-</body>
+  <dialog id="case-dialog">
+   <div class="dialog-heading">
+    <div>
+     <p class="eyebrow" id="detail-id">
+     </p>
+     <h2 id="detail-title">
+     </h2>
+    </div>
+    <button aria-label="Close case" class="icon-button" id="close-case">
+     ×
+    </button>
+   </div>
+   <div class="dialog-body">
+    <div id="detail-summary">
+    </div>
+    <h3>
+     Evidence transfers
+    </h3>
+    <div id="detail-evidence">
+    </div>
+    <div class="case-workflow">
+     <h3>
+      Investigator decision
+     </h3>
+     <form id="case-form">
+      <div class="form-row">
+       <label>
+        Status
+        <select id="detail-status">
+         <option>
+          Open
+         </option>
+         <option>
+          In review
+         </option>
+         <option>
+          Escalated
+         </option>
+         <option>
+          Closed
+         </option>
+        </select>
+       </label>
+       <label>
+        Assigned to
+        <input id="detail-assignee" maxlength="60" placeholder="Investigator name"/>
+       </label>
+      </div>
+      <label>
+       Decision rationale
+       <textarea id="detail-rationale" maxlength="3000" placeholder="Required when closing or escalating" rows="2"></textarea>
+      </label>
+      <button class="primary" type="submit">
+       Save decision
+      </button>
+     </form>
+    </div>
+    <div class="notes-heading">
+     <h3>
+      Investigation notes
+     </h3>
+     <button class="text-button" id="draft-button">
+      ✧ Draft with local AI
+     </button>
+    </div>
+    <div hidden="" id="draft-area">
+     <p class="small amber-text">
+      AI draft · Verify every statement before saving
+     </p>
+     <textarea aria-label="AI draft for review" id="draft-text" rows="6"></textarea>
+     <button class="secondary" id="save-draft">
+      Save reviewed draft as note
+     </button>
+    </div>
+    <div id="detail-notes">
+    </div>
+    <form id="note-form">
+     <label for="note-text">
+      Add a private note
+     </label>
+     <textarea id="note-text" maxlength="5000" placeholder="Record your observations and next steps…" required="" rows="3"></textarea>
+     <div class="note-actions">
+      <span class="small muted">
+       Encrypted at rest
+      </span>
+      <button class="secondary" type="submit">
+       Add note
+      </button>
+     </div>
+    </form>
+    <button class="text-button" id="export-case">
+     Download case report
+    </button>
+   </div>
+  </dialog>
+  <div class="toast" hidden="" id="toast" role="status">
+  </div>
+ </body>
 </html>
-
